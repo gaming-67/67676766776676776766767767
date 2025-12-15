@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Voxel Engine Setup</title>
+    <style>
+        body { margin: 0; overflow: hidden; } /* Hide scrollbars */
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // --- 1. SETUP GLOBAL VARIABLES ---
+        let scene, camera, renderer;
+        let cube;
+
+        // --- 2. INITIALIZATION FUNCTION ---
+        function init() {
+            // Scene: Container for all objects
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x87ceeb); // Sky blue background
+
+            // Camera: Defines the player's viewpoint
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
+            camera.position.z = 5; // Move camera back so we can see the center
+
+            // Renderer: Draws the scene onto the canvas
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Simple Cube (Placeholder for Voxel/Block)
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: false });
+            cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+
+            // Handle window resizing
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        // --- 3. ANIMATION/GAME LOOP ---
+        function animate() {
+            requestAnimationFrame(animate); // Loop function 60 times per second
+
+            // Basic movement/rotation (Remove this when player movement is added)
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+
+            renderer.render(scene, camera); // Render the scene
+        }
+
+        // --- 4. RESIZE HANDLER ---
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // --- START THE GAME ---
+        init();
+        animate();
+    </script>
+</body>
+</html>
